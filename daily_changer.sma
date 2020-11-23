@@ -54,15 +54,29 @@
 
 public plugin_init()
 {
-	register_plugin("Daily Changer", "1.3", "JustinHoMi & JGHG & Karn")
+	register_plugin("Daily Changer", "1.3.1", "JustinHoMi & JGHG & Karn")
 	new today[8], custompath[256], workpath[256]
+	
+	register_cvar("dc_override", "0");
 
 	get_time("%a", today, 8)
 	get_customdir(custompath, 255)
 
-	format(workpath, 255, "%s/daily_mapcycles/%s.txt", custompath, today)
-	set_cvar_string("mapcyclefile", workpath)
+	
+	if (get_cvar_num("dc_override") & 1)
+	{
+		format(workpath, 255, "%s/daily_mapcycles/Override.txt", custompath)
+		set_cvar_string("mapcyclefile", workpath)
 
-	format(workpath, 255, "%s/daily_cfgs/%s.cfg", custompath, today)
-	set_cvar_string("mapchangecfgfile", workpath)
+		format(workpath, 255, "%s/daily_cfgs/Override.cfg", custompath)
+		set_cvar_string("mapchangecfgfile", workpath)
+	}
+	else
+	{
+		format(workpath, 255, "%s/daily_mapcycles/%s.txt", custompath, today)
+		set_cvar_string("mapcyclefile", workpath)
+
+		format(workpath, 255, "%s/daily_cfgs/%s.cfg", custompath, today)
+		set_cvar_string("mapchangecfgfile", workpath)
+	}
 }
